@@ -16,9 +16,12 @@ namespace api.Entities
 		public string Name { get; set; } = string.Empty;
 
 		[Required, MaxLength(50)]
-		public string Category { get; set; } = "Multiple Choice";
+		public string Category { get; set; } = string.Empty;
 
-		[Required, MaxLength(50)]
+        [Required, MaxLength(50)]
+        public string Type { get; set; } = "Multiple Choice";
+
+        [Required, MaxLength(50)]
 		public string Difficulty { get; set; } = "Easy";
 
 		[Required]

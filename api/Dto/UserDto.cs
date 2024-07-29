@@ -25,6 +25,6 @@ namespace api.Dto
 		[MaxLength(50)]
 		public string Type { get; set; } = "Instructor";
 
-		public ICollection<Quiz>? Quizzes { get; set; }
+		public ICollection<QuizDto>? Quizzes { get; set; }
 	}
 }

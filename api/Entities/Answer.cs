@@ -5,7 +5,6 @@ namespace api.Entities
 {
 	public class Answer
 	{
-
 		[Key]
 		public int AnswerID { get; set; }
 

@@ -15,9 +15,12 @@ namespace api.Dto
 		public string Name { get; set; } = string.Empty;
 
 		[MaxLength(50)]
-		public string Category { get; set; } = "Multiple Choice";
+		public string Category { get; set; } = string.Empty;
 
-		[MaxLength(50)]
+        [MaxLength(50)]
+        public string Type { get; set; } = "Multiple Choice";
+
+        [MaxLength(50)]
 		public string Difficulty { get; set; } = "Easy";
 
 		public int Quantity { get; set; } = 10;
@@ -27,10 +30,13 @@ namespace api.Dto
 
 		public IFormFile ImageFile { get; set; }
 
-		public int Code { get; set; }
+        [MaxLength(255)]
+        public string ImageName { get; set; } = string.Empty;
 
-		public ICollection<Question>? Questions { get; set; }
+        public int Code { get; set; }
 
-		public ICollection<TakeQuiz>? TakeQuizzes { get; set; }
+		public ICollection<QuestionDto>? Questions { get; set; }
+
+		public ICollection<TakeQuizDto>? TakeQuizzes { get; set; }
 	}
 }
