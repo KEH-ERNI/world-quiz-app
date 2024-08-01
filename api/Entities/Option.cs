@@ -8,8 +8,9 @@ namespace api.Entities
 		[Key]
 		public int OptionID { get; set; }
 
-		public int QuestionID { get; set; }
-		[ForeignKey("QuestionID")]
+        [ForeignKey("QuestionID")]
+        public int QuestionID { get; set; }
+		
 		public Question Question { get; set; }
 
 		[Required, MaxLength(255)]

@@ -8,8 +8,8 @@ namespace api.Entities
 		[Key]
 		public int QuestionID { get; set; }
 
-		public int QuizID { get; set; }
-		[ForeignKey("QuizID")]
+        [ForeignKey("QuizID")]
+        public int QuizID { get; set; }
 		public Quiz Quiz { get; set; }
 
 		[Required, MaxLength(255)]

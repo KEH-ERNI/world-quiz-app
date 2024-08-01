@@ -39,9 +39,24 @@ namespace api.Controllers
 			_context.Users.Add(user);
 			await _context.SaveChangesAsync();
 
-			var userResultDto = _mapper.Map<UserDto>(userDto);
-			return CreatedAtAction(nameof(Register), new { id = user.UserID }, userResultDto);
-		}
+            var token = _jwtTokenService.GenerateToken(user);
+
+            var userResultDto = new
+            {
+                Token = token,
+                User = new
+                {
+                    UserID = user.UserID,
+                    FName = user.FName,
+                    LName = user.LName,
+                    Email = user.Email,
+                    UName = user.UName,
+                    Type = user.Type
+                }
+            };
+
+            return CreatedAtAction(nameof(Register), new { id = user.UserID }, userResultDto);
+        }
 
 		[HttpPost("login")]
 		public async Task<ActionResult> Login(LoginDto loginDto)

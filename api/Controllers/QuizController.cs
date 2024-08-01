@@ -62,7 +62,7 @@ namespace api.Controllers
             var user = await _context.Users.FindAsync(quizDto.UserID);
             if (user == null)
             {
-                return NotFound("This user has no quiz.");
+                return NotFound("User not found.");
             }
 
             if (quizDto.ImageFile == null || quizDto.ImageFile.Length == 0)
