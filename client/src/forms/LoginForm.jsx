@@ -1,6 +1,16 @@
 import { CusInput, CusBtn } from '../components';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../redux/slices';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 const LoginForm = () => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	const { user, token, loading, error } = useSelector((state) => state.auth);
+
 	const { control, handleSubmit } = useForm({
 		defaultValues: {
 			uname: '',
@@ -8,9 +18,18 @@ const LoginForm = () => {
 		},
 	});
 
-	const onSubmit = (data) => {
-		console.log(data);
+	const onSubmit = async (data) => {
+		dispatch(login(data));
 	};
+
+	useEffect(() => {
+		if (user) {
+			localStorage.setItem('ACCESS_TOKEN', token);
+			localStorage.setItem('ACCESS_USER', user);
+
+			navigate('/quizzes');
+		}
+	}, [user, token, navigate]);
 
 	return (
 		<div>

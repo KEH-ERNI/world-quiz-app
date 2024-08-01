@@ -1,6 +1,6 @@
 import React from 'react';
+import RoutesNav from './navigations/RoutesNav';
 
-import RoutesNav from './RoutesNav';
 const App = () => {
 	return <RoutesNav />;
 };

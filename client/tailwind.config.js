@@ -8,7 +8,7 @@ export default {
 				'primary-35': 'rgba(199, 82, 42, 0.35)',
 				'primary-50': 'rgba(199, 82, 42, 0.50)',
 				primdark: '#B54A26',
-				shadow: '#F4F0D8',
+				shadow: '#EEE6D1',
 				light: '#FFFBE5',
 				dark: '#1E1E1E',
 				inputbg: '#FFFEF6',
@@ -24,6 +24,9 @@ export default {
 			fontFamily: {
 				outfit: ['Outfit', 'sans-serif'],
 				lexend: ['Lexend', 'sans-serif'],
+			},
+			boxShadow: {
+				custom: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 -20px 25px -5px rgba(0, 0, 0, 0.1)',
 			},
 		},
 	},

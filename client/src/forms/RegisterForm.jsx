@@ -1,20 +1,29 @@
 import { CusInput, CusBtn, CusRadioBtn } from '../components';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { register } from '../redux/slices';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterForm = () => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	const { user, token, loading, error } = useSelector((state) => state.auth);
+
 	const { control, handleSubmit } = useForm({
 		defaultValues: {
-			fname: '',
-			lname: '',
+			fName: '',
+			lName: '',
 			email: '',
-			uname: '',
+			uName: '',
 			pass: '',
 			type: '',
 		},
 	});
 	const options = [
 		{
-			value: 'student',
+			value: 'Student',
 			imageUrl: 'student.png',
 			altText: 'Student',
 		},
@@ -25,14 +34,21 @@ const RegisterForm = () => {
 		},
 	];
 
-	const onSubmit = (data) => {
-		console.log(data);
+	const onSubmit = async (data) => {
+		dispatch(register(data));
 	};
+
+	useEffect(() => {
+		if (user) {
+			localStorage.setItem('ACCESS_TOKEN', token);
+			localStorage.setItem('ACCESS_USER', user);
+
+			navigate('/quizzes');
+		}
+	}, [user, token, navigate]);
+
 	return (
-		<div
-			className='text-left pt-0 px-2 pb-2 font-lexend'
-			onSubmit={handleSubmit(onSubmit)}
-		>
+		<div className='text-left pt-0 px-2 pb-2 font-lexend'>
 			<div className='flex flex-col gap-1'>
 				<div className='text-xl font-medium'>Sign in</div>
 				<div className='font-light text-sm'>
@@ -41,16 +57,19 @@ const RegisterForm = () => {
 				</div>
 			</div>
 
-			<form className='mt-6 flex flex-col gap-2'>
+			<form
+				className='mt-6 flex flex-col gap-2'
+				onSubmit={handleSubmit(onSubmit)}
+			>
 				<CusInput
 					placeholder={'First Name'}
 					control={control}
-					name={'fname'}
+					name={'fName'}
 				/>
 				<CusInput
 					placeholder={'Last Name'}
 					control={control}
-					name={'lname'}
+					name={'lName'}
 				/>
 				<CusInput
 					placeholder={'Email Address'}
@@ -60,7 +79,7 @@ const RegisterForm = () => {
 				<CusInput
 					placeholder={'Username'}
 					control={control}
-					name={'uname'}
+					name={'uName'}
 				/>
 				<CusInput
 					placeholder={'Password'}
