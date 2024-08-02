@@ -8,12 +8,13 @@ namespace api.Entities
 		[Key]
 		public int AnswerID { get; set; }
 
-		public int TakeID { get; set; }
-		[ForeignKey("TakeID")]
+        [ForeignKey("TakeID")]
+        public int TakeID { get; set; }
+		
 		public TakeQuiz TakeQuiz { get; set; }
 
-		public int OptionID { get; set; }
-		[ForeignKey("OptionID")]
+        [ForeignKey("OptionID")]
+        public int OptionID { get; set; }
 		public Option Option { get; set; }
 
 		public Boolean isCorrect { get; set; } = false;

@@ -26,5 +26,6 @@ namespace api.Entities
 		public string Type { get; set; } = "Instructor";
 
 		public ICollection<Quiz> Quizzes { get; set; }
-	}
+        public ICollection<TakeQuiz> TakeQuizzes { get; set; }
+    }
 }
