@@ -5,3 +5,4 @@ export { default as CusRadioBtn } from './CusRadioBtn';
 export { default as CusAlert } from './CusAlert';
 export { default as CusTextArea } from './CusTextArea';
 export { default as CusSelect } from './CusSelect';
+export { default as CusCard } from './CusCard';

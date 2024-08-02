@@ -26,7 +26,7 @@ export default {
 				lexend: ['Lexend', 'sans-serif'],
 			},
 			boxShadow: {
-				custom: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 -20px 25px -5px rgba(0, 0, 0, 0.1)',
+				custom: '0 0 8px rgba(0, 0, 0, 0.25)',
 			},
 		},
 	},
