@@ -1,12 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axiosInstance from '../../axiosInstance';
 
-export const getQuizzes = createAsyncThunk(
-	'get/quizzes',
+export const getQuestions = createAsyncThunk(
+	'get/questions',
 	async (_, { rejectWithValue }) => {
 		try {
-			const response = await axiosInstance.get('/Quiz');
-			console.log(response);
+			const response = await axiosInstance.get('/Question');
 			return response.data;
 		} catch (error) {
 			console.log(error);
@@ -15,11 +14,24 @@ export const getQuizzes = createAsyncThunk(
 	}
 );
 
-export const getQuiz = createAsyncThunk(
-	'get/quiz',
+export const addQuestion = createAsyncThunk(
+	'add/question',
+	async (data, { rejectWithValue }) => {
+		try {
+			const response = await axiosInstance.post('/Question', data);
+			return response.data;
+		} catch (error) {
+			console.log(error);
+			return rejectWithValue(error.response.data);
+		}
+	}
+);
+
+export const getQuestion = createAsyncThunk(
+	'get/question',
 	async (quizId, { rejectWithValue }) => {
 		try {
-			const response = await axiosInstance.get(`/Quiz/${quizId}`);
+			const response = await axiosInstance.get(`/Question/${quizId}`);
 			return response.data;
 		} catch (error) {
 			console.log(error);
@@ -28,11 +40,13 @@ export const getQuiz = createAsyncThunk(
 	}
 );
 
-export const delQuiz = createAsyncThunk(
-	'del/quiz',
-	async (quizId, { rejectWithValue }) => {
+export const delQuestion = createAsyncThunk(
+	'del/question',
+	async (questionId, { rejectWithValue }) => {
 		try {
-			const response = await axiosInstance.delete(`/Quiz/${quizId}`);
+			const response = await axiosInstance.delete(
+				`/Question/${questionId}`
+			);
 			return response.data;
 		} catch (error) {
 			console.log(error);
@@ -41,24 +55,14 @@ export const delQuiz = createAsyncThunk(
 	}
 );
 
-export const addQuiz = createAsyncThunk(
-	'add/quiz',
-	async (formData, { rejectWithValue }) => {
+export const editQuestion = createAsyncThunk(
+	'edit/question',
+	async ({ questionId, updatedData }, { rejectWithValue }) => {
 		try {
-			const response = await axiosInstance.post('/Quiz', formData);
-			return response.data;
-		} catch (error) {
-			console.log(error);
-			return rejectWithValue(error.response.data);
-		}
-	}
-);
-
-export const editQuiz = createAsyncThunk(
-	'edit/quiz',
-	async ({ id, formData }, { rejectWithValue }) => {
-		try {
-			const response = await axiosInstance.put(`/Quiz/${id}`, formData);
+			const response = await axiosInstance.put(
+				`/Question/${questionId}`,
+				updatedData
+			);
 			return response.data;
 		} catch (error) {
 			return rejectWithValue(error.response.data);
@@ -66,85 +70,85 @@ export const editQuiz = createAsyncThunk(
 	}
 );
 
-const quizSlice = createSlice({
-	name: 'quiz',
+const questionSlice = createSlice({
+	name: 'question',
 	initialState: {
 		loading: false,
-		current: null,
+		current: false,
 		data: null,
 		error: null,
 	},
 	reducers: {},
 	extraReducers: (builder) => {
 		builder
-			.addCase(getQuizzes.pending, (state) => {
+			.addCase(getQuestions.pending, (state) => {
 				state.loading = true;
 				state.error = null;
 			})
-			.addCase(getQuizzes.fulfilled, (state, action) => {
+			.addCase(getQuestions.fulfilled, (state, action) => {
 				state.loading = false;
 				state.data = action.payload;
 			})
-			.addCase(getQuizzes.rejected, (state, action) => {
+			.addCase(getQuestions.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload;
 			})
-			.addCase(addQuiz.pending, (state) => {
+			.addCase(addQuestion.pending, (state) => {
 				state.loading = true;
 				state.error = null;
 			})
-			.addCase(addQuiz.fulfilled, (state, action) => {
+			.addCase(addQuestion.fulfilled, (state, action) => {
 				state.loading = false;
 				state.data = action.payload;
 			})
-			.addCase(addQuiz.rejected, (state, action) => {
+			.addCase(addQuestion.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload;
 			})
-			.addCase(getQuiz.pending, (state) => {
+			.addCase(getQuestion.pending, (state) => {
 				state.loading = true;
+				state.error = null;
 			})
-			.addCase(getQuiz.fulfilled, (state, action) => {
+			.addCase(getQuestion.fulfilled, (state, action) => {
 				state.loading = false;
 				state.current = action.payload;
 			})
-			.addCase(getQuiz.rejected, (state, action) => {
+			.addCase(getQuestion.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload;
 			})
-			.addCase(delQuiz.pending, (state) => {
-				state.loading = true;
-			})
-			.addCase(delQuiz.fulfilled, (state, action) => {
-				state.loading = false;
-				state.data = action.payload;
-			})
-			.addCase(delQuiz.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.payload;
-			})
-			.addCase(editQuiz.pending, (state) => {
+			.addCase(delQuestion.pending, (state) => {
 				state.loading = true;
 				state.error = null;
 			})
-			.addCase(editQuiz.fulfilled, (state, action) => {
+			.addCase(delQuestion.fulfilled, (state, action) => {
 				state.loading = false;
-
+				state.data = action.payload;
+			})
+			.addCase(delQuestion.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.payload;
+			})
+			.addCase(editQuestion.pending, (state) => {
+				state.loading = true;
+				state.error = null;
+			})
+			.addCase(editQuestion.fulfilled, (state, action) => {
+				state.loading = false;
 				if (state.data) {
 					const index = state.data.findIndex(
-						(quiz) => quiz.quizID === action.payload.quizID
+						(question) => question.id === action.payload.id
 					);
-					console.log('adcae', action.payload.quizID);
 					if (index !== -1) {
 						state.data[index] = action.payload;
 					}
 				}
 			})
-			.addCase(editQuiz.rejected, (state, action) => {
+			.addCase(editQuestion.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload;
 			});
 	},
 });
 
-export const quizReducer = quizSlice.reducer;
+export const questionReducer = questionSlice.reducer;
