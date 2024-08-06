@@ -1,14 +1,32 @@
 import { CusInput, CusTextArea, CusBtn, CusSelect } from '../components';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
-import { addQuestion, getQuiz } from '../redux/slices';
-import { getQuestion } from '../redux/slices/questionSlice';
+import { useState, useEffect } from 'react';
+import { addQuestion, getQuiz, editQuestion } from '../redux/slices';
 
-const ItemForm = ({ quizID, setOpenModal, data }) => {
-	const { control, handleSubmit } = useForm();
+const ItemForm = ({ quizID, setOpenModal, existData = null }) => {
 	const [correctOption, setCorrectOption] = useState(null);
 	const dispatch = useDispatch();
+
+	const defaultValues = {
+		text: existData?.text || '',
+		...existData?.options?.reduce((acc, option, index) => {
+			acc[`option${index + 1}`] = option.text;
+			return acc;
+		}, {}),
+	};
+
+	const { control, handleSubmit, setValue } = useForm({ defaultValues });
+
+	useEffect(() => {
+		if (existData) {
+			setValue('text', existData.text);
+			existData.options?.forEach((option, index) => {
+				setValue(`option${index + 1}`, option.text);
+				if (option.isCorrect) setCorrectOption(index);
+			});
+		}
+	}, [existData, setValue]);
 
 	const onSubmit = async (data) => {
 		const { text, questionID, ...optionsArray } = data;
@@ -24,11 +42,24 @@ const ItemForm = ({ quizID, setOpenModal, data }) => {
 			options,
 		};
 
-		dispatch(addQuestion(dataFormat)).then((response) => {
-			console.log(response);
-			dispatch(getQuiz(quizID));
-			setOpenModal(false);
-		});
+		if (existData) {
+			dispatch(
+				editQuestion({
+					questionId: existData.questionID,
+					updatedData: dataFormat,
+				})
+			).then((response) => {
+				console.log(response);
+				dispatch(getQuiz(quizID));
+				setOpenModal(false);
+			});
+		} else {
+			dispatch(addQuestion(dataFormat)).then((response) => {
+				console.log(response);
+				dispatch(getQuiz(quizID));
+				setOpenModal(false);
+			});
+		}
 	};
 	return (
 		<div className='text-left pt-0 px-2 pb-2 font-lexend'>

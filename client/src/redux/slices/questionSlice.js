@@ -14,19 +14,6 @@ export const getQuestions = createAsyncThunk(
 	}
 );
 
-export const addQuestion = createAsyncThunk(
-	'add/question',
-	async (data, { rejectWithValue }) => {
-		try {
-			const response = await axiosInstance.post('/Question', data);
-			return response.data;
-		} catch (error) {
-			console.log(error);
-			return rejectWithValue(error.response.data);
-		}
-	}
-);
-
 export const getQuestion = createAsyncThunk(
 	'get/question',
 	async (quizId, { rejectWithValue }) => {
@@ -40,13 +27,11 @@ export const getQuestion = createAsyncThunk(
 	}
 );
 
-export const delQuestion = createAsyncThunk(
-	'del/question',
-	async (questionId, { rejectWithValue }) => {
+export const addQuestion = createAsyncThunk(
+	'add/question',
+	async (data, { rejectWithValue }) => {
 		try {
-			const response = await axiosInstance.delete(
-				`/Question/${questionId}`
-			);
+			const response = await axiosInstance.post('/Question', data);
 			return response.data;
 		} catch (error) {
 			console.log(error);
@@ -70,11 +55,27 @@ export const editQuestion = createAsyncThunk(
 	}
 );
 
+export const delQuestion = createAsyncThunk(
+	'del/question',
+	async (questionId, { rejectWithValue }) => {
+		try {
+			const response = await axiosInstance.delete(
+				`/Question/${questionId}`
+			);
+			return response.data;
+		} catch (error) {
+			console.log(error);
+			return rejectWithValue(error.response.data);
+		}
+	}
+);
+
+
 const questionSlice = createSlice({
 	name: 'question',
 	initialState: {
 		loading: false,
-		current: false,
+		current: null,
 		data: null,
 		error: null,
 	},
@@ -135,13 +136,16 @@ const questionSlice = createSlice({
 			})
 			.addCase(editQuestion.fulfilled, (state, action) => {
 				state.loading = false;
-				if (state.data) {
-					const index = state.data.findIndex(
-						(question) => question.id === action.payload.id
-					);
-					if (index !== -1) {
-						state.data[index] = action.payload;
-					}
+				if (!Array.isArray(state.data)) {
+					state.data = [];
+				}
+				console.log(state.data);
+				const index = state.data.findIndex(
+					(question) =>
+						question.questionID === action.payload.questionID
+				);
+				if (index !== -1) {
+					state.data[index] = action.payload;
 				}
 			})
 			.addCase(editQuestion.rejected, (state, action) => {

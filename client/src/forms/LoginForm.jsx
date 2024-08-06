@@ -1,17 +1,23 @@
 import { CusInput, CusBtn } from '../components';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../redux/slices';
-import { useEffect } from 'react';
+import { getQuizzes, login } from '../redux/slices';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const LoginForm = () => {
+const LoginForm = ({ setOpenSign, setOpenLog }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const [loginError, setLoginError] = useState();
 
-	const { user, token, loading, error } = useSelector((state) => state.auth);
+	const { user, token } = useSelector((state) => state.auth);
 
-	const { control, handleSubmit } = useForm({
+	const {
+		control,
+		handleSubmit,
+		formState: { errors },
+		reset,
+	} = useForm({
 		defaultValues: {
 			uname: '',
 			pass: '',
@@ -19,7 +25,14 @@ const LoginForm = () => {
 	});
 
 	const onSubmit = async (data) => {
-		dispatch(login(data));
+		try {
+			await dispatch(login(data)).unwrap();
+			dispatch(getQuizzes());
+			reset();
+		} catch (error) {
+			setLoginError(error);
+			reset();
+		}
 	};
 
 	useEffect(() => {
@@ -38,7 +51,17 @@ const LoginForm = () => {
 					<div className='text-xl font-medium'>Log in</div>
 					<div className='font-light text-sm'>
 						Don't have an account?{' '}
-						<a className='text-primary'>Sign in</a>
+						<a
+							className='text-primary'
+							onClick={() => {
+								setOpenSign(true);
+								setOpenLog(false);
+								reset();
+								setLoginError();
+							}}
+						>
+							Sign in
+						</a>
 					</div>
 				</div>
 
@@ -50,12 +73,19 @@ const LoginForm = () => {
 						placeholder={'Username'}
 						name={'uname'}
 						control={control}
+						rules={{ required: 'Username is required.' }}
+						error={errors.uname}
 					/>
 					<CusInput
 						placeholder={'Password'}
 						name={'pass'}
 						control={control}
+						rules={{ required: 'Password is required.' }}
+						error={errors.pass}
 					/>
+					<p className='text-red-700 font-light text-xs ml-1 text-center'>
+						{loginError}
+					</p>
 					<CusBtn
 						content={'LOG IN'}
 						style={'primary'}

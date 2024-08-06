@@ -75,7 +75,7 @@ const QuizForm = ({ setOpenModal, existData = null }) => {
 				console.log(response);
 				dispatch(getQuizzes());
 				setOpenModal(false);
-				navigate(`/quiz/${response.payload.id}`);
+				// navigate(`/quiz/${response.payload.id}`);
 			});
 		}
 	};

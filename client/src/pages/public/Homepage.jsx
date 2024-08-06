@@ -8,6 +8,8 @@ const Homepage = () => {
 	const [openSign, setOpenSign] = useState(false);
 	const [openLog, setOpenLog] = useState(false);
 
+
+
 	return (
 		<main
 			className={`container-fluid min-w-screen min-h-screen p-8 bg-bg-light text-txt-light`}
@@ -78,6 +80,9 @@ const Homepage = () => {
 					</div>
 				</div>
 			</nav>
+			<hr
+				className={`${openNav ? 'mt-5 border-shadow' : 'border-none'}`}
+			/>
 			<section className='mt-4 font-lexend'>
 				<img src='/world.gif' />
 				<div className='flex flex-col gap-3'>
@@ -117,12 +122,22 @@ const Homepage = () => {
 					/>
 				</div>
 				<CusModal
-					content={<RegisterForm />}
+					content={
+						<RegisterForm
+							setOpenSign={setOpenSign}
+							setOpenLog={setOpenLog}
+						/>
+					}
 					openModal={openSign}
 					setOpenModal={setOpenSign}
 				/>
 				<CusModal
-					content={<LoginForm />}
+					content={
+						<LoginForm
+							setOpenSign={setOpenSign}
+							setOpenLog={setOpenLog}
+						/>
+					}
 					openModal={openLog}
 					setOpenModal={setOpenLog}
 				/>

@@ -1,6 +1,8 @@
 import React from 'react';
-
+import { useForm } from 'react-hook-form';
 const CusModal = ({ title, content, openModal, setOpenModal }) => {
+	const { reset } = useForm();
+
 	return (
 		<div
 			className={`relative z-10 ${openModal ? 'block' : 'hidden'}`}
@@ -20,7 +22,10 @@ const CusModal = ({ title, content, openModal, setOpenModal }) => {
 							<div className='flex min-w-full justify-end '>
 								<button
 									className='bg-transparent px-0 py-0'
-									onClick={() => setOpenModal(false)}
+									onClick={() => {
+										setOpenModal(false);
+										reset();
+									}}
 								>
 									<svg
 										xmlns='http://www.w3.org/2000/svg'

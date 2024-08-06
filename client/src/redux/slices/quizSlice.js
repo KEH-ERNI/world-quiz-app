@@ -28,19 +28,6 @@ export const getQuiz = createAsyncThunk(
 	}
 );
 
-export const delQuiz = createAsyncThunk(
-	'del/quiz',
-	async (quizId, { rejectWithValue }) => {
-		try {
-			const response = await axiosInstance.delete(`/Quiz/${quizId}`);
-			return response.data;
-		} catch (error) {
-			console.log(error);
-			return rejectWithValue(error.response.data);
-		}
-	}
-);
-
 export const addQuiz = createAsyncThunk(
 	'add/quiz',
 	async (formData, { rejectWithValue }) => {
@@ -61,6 +48,19 @@ export const editQuiz = createAsyncThunk(
 			const response = await axiosInstance.put(`/Quiz/${id}`, formData);
 			return response.data;
 		} catch (error) {
+			return rejectWithValue(error.response.data);
+		}
+	}
+);
+
+export const delQuiz = createAsyncThunk(
+	'del/quiz',
+	async (quizId, { rejectWithValue }) => {
+		try {
+			const response = await axiosInstance.delete(`/Quiz/${quizId}`);
+			return response.data;
+		} catch (error) {
+			console.log(error);
 			return rejectWithValue(error.response.data);
 		}
 	}
@@ -131,10 +131,10 @@ const quizSlice = createSlice({
 				state.loading = false;
 
 				if (state.data) {
+
 					const index = state.data.findIndex(
 						(quiz) => quiz.quizID === action.payload.quizID
 					);
-					console.log('adcae', action.payload.quizID);
 					if (index !== -1) {
 						state.data[index] = action.payload;
 					}

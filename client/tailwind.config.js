@@ -6,6 +6,7 @@ export default {
 			colors: {
 				primary: '#C7522A',
 				'primary-35': 'rgba(199, 82, 42, 0.35)',
+				'primary-20': 'rgba(199, 82, 42, 0.20)',
 				'primary-50': 'rgba(199, 82, 42, 0.50)',
 				primdark: '#B54A26',
 				shadow: '#EEE6D1',

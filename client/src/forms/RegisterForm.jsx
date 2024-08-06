@@ -2,16 +2,22 @@ import { CusInput, CusBtn, CusRadioBtn } from '../components';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../redux/slices';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const RegisterForm = () => {
+const RegisterForm = ({ setOpenSign, setOpenLog }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const [signError, setSignError] = useState();
 
-	const { user, token, loading, error } = useSelector((state) => state.auth);
+	const { user, token } = useSelector((state) => state.auth);
 
-	const { control, handleSubmit } = useForm({
+	const {
+		control,
+		handleSubmit,
+		formState: { errors },
+		reset,
+	} = useForm({
 		defaultValues: {
 			fName: '',
 			lName: '',
@@ -30,12 +36,19 @@ const RegisterForm = () => {
 		{
 			value: 'teacher',
 			imageUrl: 'teacher.png',
-			altText: 'Teacher',
+			altText: 'Instructor',
 		},
 	];
 
 	const onSubmit = async (data) => {
-		dispatch(register(data));
+		try {
+			await dispatch(register(data)).unwrap();
+			dispatch(getQuizzes());
+			reset();
+		} catch (error) {
+			setSignError(error);
+			reset();
+		}
 	};
 
 	useEffect(() => {
@@ -53,7 +66,17 @@ const RegisterForm = () => {
 				<div className='text-xl font-medium'>Sign in</div>
 				<div className='font-light text-sm'>
 					Already have an account?{' '}
-					<a className='text-primary'>Log in</a>
+					<a
+						className='text-primary'
+						onClick={() => {
+							setOpenSign(false);
+							setOpenLog(true);
+							reset();
+							setSignError();
+						}}
+					>
+						Log in
+					</a>
 				</div>
 			</div>
 
@@ -65,31 +88,43 @@ const RegisterForm = () => {
 					placeholder={'First Name'}
 					control={control}
 					name={'fName'}
+					rules={{ required: 'First name is required.' }}
+					error={errors.fName}
 				/>
 				<CusInput
 					placeholder={'Last Name'}
 					control={control}
 					name={'lName'}
+					rules={{ required: 'Last name is required.' }}
+					error={errors.lName}
 				/>
 				<CusInput
 					placeholder={'Email Address'}
 					control={control}
 					name={'email'}
+					rules={{ required: 'Email is required.' }}
+					error={errors.email}
 				/>
 				<CusInput
 					placeholder={'Username'}
 					control={control}
 					name={'uName'}
+					rules={{ required: 'Username is required.' }}
+					error={errors.uName}
 				/>
 				<CusInput
 					placeholder={'Password'}
 					control={control}
 					name={'pass'}
+					rules={{ required: 'Password is required.' }}
+					error={errors.pass}
 				/>
 				<CusRadioBtn
 					options={options}
 					control={control}
 					name={'type'}
+					rules={{ required: 'User role is required.' }}
+					error={errors.type}
 				/>
 				<CusBtn content={'SIGN IN'} style={'primary'} type='submit' />
 			</form>
