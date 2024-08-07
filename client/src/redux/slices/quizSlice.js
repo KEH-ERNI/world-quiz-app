@@ -6,10 +6,9 @@ export const getQuizzes = createAsyncThunk(
 	async (_, { rejectWithValue }) => {
 		try {
 			const response = await axiosInstance.get('/Quiz');
-			console.log(response);
+
 			return response.data;
 		} catch (error) {
-			console.log(error);
 			return rejectWithValue(error.response.data);
 		}
 	}

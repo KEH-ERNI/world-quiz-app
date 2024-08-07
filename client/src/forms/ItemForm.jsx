@@ -6,6 +6,7 @@ import { addQuestion, getQuiz, editQuestion } from '../redux/slices';
 
 const ItemForm = ({ quizID, setOpenModal, existData = null }) => {
 	const [correctOption, setCorrectOption] = useState(null);
+	const [correctError, setCorrectError] = useState(null);
 	const dispatch = useDispatch();
 
 	const defaultValues = {
@@ -16,7 +17,13 @@ const ItemForm = ({ quizID, setOpenModal, existData = null }) => {
 		}, {}),
 	};
 
-	const { control, handleSubmit, setValue } = useForm({ defaultValues });
+	const {
+		control,
+		handleSubmit,
+		setValue,
+		register,
+		formState: { errors },
+	} = useForm({ defaultValues });
 
 	useEffect(() => {
 		if (existData) {
@@ -42,25 +49,30 @@ const ItemForm = ({ quizID, setOpenModal, existData = null }) => {
 			options,
 		};
 
-		if (existData) {
-			dispatch(
-				editQuestion({
-					questionId: existData.questionID,
-					updatedData: dataFormat,
-				})
-			).then((response) => {
-				console.log(response);
-				dispatch(getQuiz(quizID));
-				setOpenModal(false);
-			});
+		if (correctOption === null) {
+			setCorrectError('Select at least one correct answer.');
 		} else {
-			dispatch(addQuestion(dataFormat)).then((response) => {
-				console.log(response);
-				dispatch(getQuiz(quizID));
-				setOpenModal(false);
-			});
+			if (existData) {
+				dispatch(
+					editQuestion({
+						questionId: existData.questionID,
+						updatedData: dataFormat,
+					})
+				).then((response) => {
+					console.log(response);
+					dispatch(getQuiz(quizID));
+					setOpenModal(false);
+				});
+			} else {
+				dispatch(addQuestion(dataFormat)).then((response) => {
+					console.log(response);
+					dispatch(getQuiz(quizID));
+					setOpenModal(false);
+				});
+			}
 		}
 	};
+
 	return (
 		<div className='text-left pt-0 px-2 pb-2 font-lexend'>
 			<div className='flex flex-col gap-1'>
@@ -74,13 +86,21 @@ const ItemForm = ({ quizID, setOpenModal, existData = null }) => {
 						name={`text`}
 						placeholder={`Question`}
 						control={control}
+						{...register('text', {
+							required: 'Question is required.',
+						})}
 					/>
+					{errors.text && (
+						<span className='text-red-700 font-light text-xs ml-1'>
+							{errors.text.message}
+						</span>
+					)}
 				</div>
 
 				{Array.from({ length: 4 }).map((_, optIndex) => (
 					<div
 						key={optIndex}
-						className='mb-2 flex flex-row w-full justify-between'
+						className='mb-2 flex flex-row w-full justify-center items-center align-center px-3 text-sm font-light bg-inputbg rounded-md ring-1 ring-inset ring-primary-50 p-2 text-gray-900 focus:outline-none placeholder:text-primary-35 shadow-lg'
 					>
 						<input
 							type='radio'
@@ -90,14 +110,31 @@ const ItemForm = ({ quizID, setOpenModal, existData = null }) => {
 							onChange={() => setCorrectOption(optIndex)}
 							className='mr-2'
 						/>
-						<CusInput
-							placeholder={`Option ${optIndex + 1}`}
-							control={control}
-							name={`option${optIndex + 1}`}
-						/>
+						<div className='flex-grow'>
+							<CusTextArea
+								placeholder={`Option ${optIndex + 1}`}
+								control={control}
+								name={`option${optIndex + 1}`}
+								rows={1}
+								none={'none'}
+								{...register(`option${optIndex + 1}`, {
+									required: `Option ${
+										optIndex + 1
+									} is required.`,
+								})}
+							/>
+							{errors[`option${optIndex + 1}`] && (
+								<span className='text-red-700 font-light text-xs ml-1'>
+									{errors[`option${optIndex + 1}`].message}
+								</span>
+							)}
+						</div>
 					</div>
 				))}
 
+				<p className='text-red-700 font-light text-xs ml-1 mb-3'>
+					{correctError}
+				</p>
 				<CusBtn
 					content={'SUBMIT'}
 					style={'primary'}

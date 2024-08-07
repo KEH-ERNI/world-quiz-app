@@ -1,14 +1,10 @@
 import React from 'react';
 
 
-const CusAlert = ({
-	type,
-	message,
-	description,
-}) => {
+const CusAlert = ({ type, message, description, setAlertVisible }) => {
 	const alertStyles = {
-		information: 'text-blue-900 bg-blue-100 border border-blue-200',
-		success: 'text-green-900 bg-green-100 border border-green-200',
+		information: 'text-blue-100 bg-blue-900 border border-blue-200',
+		success: 'text-light bg-green-700 border border-green-200',
 		warning: 'text-yellow-900 bg-yellow-100 border border-yellow-200',
 		critical: 'text-red-900 bg-red-100 border border-red-200',
 	};
@@ -25,9 +21,9 @@ const CusAlert = ({
 	};
 
 	return (
-		<div className='relative'>
+		<div className='fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md p-4'>
 			<div
-				className={`p-4 ${alertStyles[type]} border rounded-md absolute bottom-0 w-full left-1/2 transform -translate-x-1/2`}
+				className={`p-4 ${alertStyles[type]} border rounded-md shadow-lg font-lexend`}
 			>
 				<div className='flex justify-between flex-wrap'>
 					<div className='w-0 flex-1 flex'>
@@ -43,25 +39,30 @@ const CusAlert = ({
 							</svg>
 						</div>
 						<div>
-							<h4 className='text-md leading-6 font-medium'>
-								{message}
-							</h4>
-							<p className='text-sm'>{description}</p>
+							<h4 className='text-sm font-medium'>{message}</h4>
+							<p className='text-xs'>{description}</p>
 						</div>
 					</div>
 					<div>
 						<button
-							type='button'
-							className='rounded-md focus:outline-none focus:ring-2 focus:ring-current'
+							className='bg-transparent px-0 py-0'
+							onClick={() => {
+								setAlertVisible(false);
+							}}
 						>
 							<svg
-								width='24'
-								height='24'
-								viewBox='0 0 24 24'
 								xmlns='http://www.w3.org/2000/svg'
-								fill='currentColor'
+								fill='none'
+								viewBox='0 0 24 24'
+								strokeWidth={1.5}
+								stroke='currentColor'
+								className='size-4'
 							>
-								<path d='M17.6555 6.3331a.9.9 0 0 1 .001 1.2728l-4.1032 4.1085a.4.4 0 0 0 0 .5653l4.1031 4.1088a.9002.9002 0 0 1 .0797 1.1807l-.0806.092a.9.9 0 0 1-1.2728-.0009l-4.1006-4.1068a.4.4 0 0 0-.5662 0l-4.099 4.1068a.9.9 0 1 1-1.2738-1.2718l4.1027-4.1089a.4.4 0 0 0 0-.5652L6.343 7.6059a.9002.9002 0 0 1-.0796-1.1807l.0806-.092a.9.9 0 0 1 1.2728.0009l4.099 4.1055a.4.4 0 0 0 .5662 0l4.1006-4.1055a.9.9 0 0 1 1.2728-.001z'></path>
+								<path
+									strokeLinecap='round'
+									strokeLinejoin='round'
+									d='M6 18 18 6M6 6l12 12'
+								/>
 							</svg>
 						</button>
 					</div>

@@ -13,7 +13,7 @@ const StudentItem = ({ current, user }) => {
 
 	const { control, handleSubmit, watch, setValue } = useForm({
 		defaultValues: {
-			quizID: current.quizID,
+			quizID: current?.quizID,
 			userID: user.userID,
 			score: 0,
 		},

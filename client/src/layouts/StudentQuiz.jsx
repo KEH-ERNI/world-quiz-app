@@ -1,38 +1,22 @@
 import { CusBtn, CusCard } from '../components';
-import { useDispatch, useSelector } from 'react-redux';
 import { getQuizzes } from '../redux/slices';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-const StudentQuiz = () => {
-	const dispatch = useDispatch();
+import Setting from './Setting';
+
+const StudentQuiz = ({ categories, dispatch, data }) => {
 	const navigate = useNavigate();
-	const categories = [
-		'Geography',
-		'History',
-		'Culture',
-		'Science and Nature',
-		'Sports',
-		'Music and Entertainment',
-		'Economics and Politics',
-		'Technology and Innovation',
-		'Current Affairs',
-	];
-	const { loading, data, error } = useSelector((state) => state.quiz);
+
+	const [search, setSearch] = useState('');
+	const [categ, setCategory] = useState('');
+	const [difficulty, setDifficulty] = useState('');
 
 	useEffect(() => {
 		dispatch(getQuizzes());
 	}, [dispatch]);
 
-	// localStorage.removeItem('state');
-	// localStorage.removeItem('ACCESS_TOKEN');
-	// localStorage.removeItem('ACCESS_USER');
-
-	if (loading) return <div>Loading...</div>;
-	if (error) return <div>Error: {error}</div>;
 	return (
-		<main
-			className={`container-fluid w-screen min-h-screen p-8 bg-bg-light text-txt-light`}
-		>
+		<>
 			<section className='mt-4 font-lexend flex flex-col gap-8'>
 				<div className='flex flex-col gap-3'>
 					<div className='flex flex-col gap-2'>
@@ -45,35 +29,77 @@ const StudentQuiz = () => {
 						</div>
 					</div>
 					<div className='bg-shadow p-3 flex rounded-xl shadow-custom flex-col font-light text-sm gap-2'>
-						<div className='bg-light p-3'>search bar</div>
-						<div className='bg-light p-3'>category</div>
-						<div className='bg-light p-3'>difficulty</div>
-						<div className='bg-light p-3'>enter code here</div>
-						<CusBtn
-							content={'JOIN'}
-							style={'primary'}
-							action={() => setOpenAdd(true)}
+						<Setting
+							categories={categories}
+							search={search}
+							setSearch={setSearch}
+							difficulty={difficulty}
+							setDifficulty={setDifficulty}
+							category={categ}
+							setCategory={setCategory}
 						/>
+						<div className='px-3 py-2 text-sm font-light bg-inputbg w-full rounded-lg ring-1 ring-inset ring-primary-20  shadow-lg flex flex-row items-center shadow-lg'>
+							<input
+								type='text'
+								className='form-control pl-2 text-sm font-light bg-inputbg w-full  placeholder:text-primary-50 focus:outline-none'
+								placeholder={`Enter code here.`}
+							/>
+							<CusBtn content={'JOIN'} style={'primary'} h={4} />
+						</div>
 					</div>
 				</div>
 				<div className='flex flex-col gap-12'>
 					{categories.map((category) => {
 						const filteredQuiz = Array.isArray(data)
-							? data.filter((quiz) => quiz.category === category)
+							? data.filter(
+									(quiz) => quiz.category === category.name
+							  )
 							: [];
 
-						if (filteredQuiz.length == 0) {
+						const setFiltered = filteredQuiz.filter((quiz) => {
+							const matchesSearch = search
+								? quiz.name
+										.toLowerCase()
+										.includes(search.toLowerCase())
+								: true;
+							const matchesCategory = categ
+								? quiz.category === categ
+								: true;
+							const matchesDifficulty = difficulty
+								? quiz.difficulty === difficulty
+								: true;
+							return (
+								matchesSearch &&
+								matchesCategory &&
+								matchesDifficulty
+							);
+						});
+
+						const displayData =
+							search || category.name || difficulty
+								? setFiltered
+								: data;
+
+						if (displayData.length === 0) {
 							return null;
 						}
 
 						return (
-							<div key={category} className='flex flex-col gap-4'>
+							<div
+								key={category.name}
+								className='flex flex-col gap-4'
+							>
 								<div className='gap-1'>
-									<div>{category}</div>
-									<div className='text-sm'>Description</div>
+									<div className='flex flex-row gap-2 bg-shadow p-2 rounded-lg uppercase items-center text-md'>
+										<img
+											src={`./images/${category.icon}`}
+											className='w-6 h-6 ml-2'
+										/>
+										{category.name}
+									</div>
 								</div>
 
-								{filteredQuiz.map((quiz) => (
+								{setFiltered.map((quiz) => (
 									<div key={quiz.quizID}>
 										<CusCard
 											title={quiz.name}
@@ -102,7 +128,7 @@ const StudentQuiz = () => {
 					})}
 				</div>
 			</section>
-		</main>
+		</>
 	);
 };
 

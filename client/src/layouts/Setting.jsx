@@ -48,8 +48,8 @@ const Setting = ({
 						Select Category
 					</option>
 					{categories.map((option, index) => (
-						<option key={index} value={option}>
-							{option}
+						<option key={index} value={option.name}>
+							{option.name}
 						</option>
 					))}
 				</select>

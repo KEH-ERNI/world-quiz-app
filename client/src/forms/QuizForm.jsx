@@ -5,7 +5,13 @@ import { useState, useEffect } from 'react';
 import { addQuiz, editQuiz, getQuizzes } from '../redux/slices';
 import { useNavigate } from 'react-router-dom';
 
-const QuizForm = ({ setOpenModal, existData = null }) => {
+const QuizForm = ({
+	setOpenModal,
+	existData = null,
+	setAlertDesc,
+	setAlertMsg,
+	setAlertVisible,
+}) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [file, setFile] = useState(null);
@@ -68,6 +74,11 @@ const QuizForm = ({ setOpenModal, existData = null }) => {
 					console.log(response);
 					dispatch(getQuizzes());
 					setOpenModal(false);
+
+					setAlertMsg('Success!');
+					setAlertDesc('The quiz has been successfully edited.');
+					setAlertVisible(true);
+					setTimeout(() => setAlertVisible(false), 3000);
 				}
 			);
 		} else {
@@ -75,7 +86,13 @@ const QuizForm = ({ setOpenModal, existData = null }) => {
 				console.log(response);
 				dispatch(getQuizzes());
 				setOpenModal(false);
-				// navigate(`/quiz/${response.payload.id}`);
+
+				setAlertMsg('Success!');
+				setAlertDesc('The quiz has been successfully added.');
+				setAlertVisible(true);
+				setTimeout(() => setAlertVisible(false), 3000);
+
+				navigate(`/quiz/${response.payload.quizID}`);
 			});
 		}
 	};
