@@ -13,6 +13,7 @@ export default {
 				'red-light': 'rgba(171, 47, 5, 0.35)',
 				'red-light-1': 'rgba(171, 47, 5, 0.1)',
 				'green-light-1': 'rgba(116, 168, 146, 0.1)',
+				main: '#F4F0DB',
 				primdark: '#B54A26',
 				shadow: '#EEE6D1',
 				light: '#FFFBE5',

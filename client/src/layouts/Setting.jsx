@@ -10,7 +10,7 @@ const Setting = ({
 	const difficultyChoices = ['Easy', 'Medium', 'Hard'];
 
 	return (
-		<div className='flex flex-col gap-2'>
+		<div className='flex flex-col gap-2 md:flex-row w-full'>
 			<div className='px-3 py-2.5 text-sm font-light bg-inputbg w-full rounded-lg ring-1 ring-inset ring-primary-20 p-2 shadow-lg flex flex-row items-center shadow-lg'>
 				<input
 					type='text'

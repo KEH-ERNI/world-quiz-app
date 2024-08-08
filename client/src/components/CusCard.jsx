@@ -11,9 +11,7 @@ const CusCard = ({
 }) => {
 	const baseURL = 'https://localhost:7045';
 
-	const [textToCopy, setTextToCopy] = useState(
-		'This is the text to be copied.'
-	);
+	const [textToCopy, setTextToCopy] = useState(code);
 	const [copySuccess, setCopySuccess] = useState('');
 
 	const handleCopyClick = async () => {
@@ -29,19 +27,22 @@ const CusCard = ({
 	};
 
 	return (
-		<div className='bg-light shadow-custom p-4 rounded-xl flex flex-col text-sm font-light gap-1 font-lexend'>
-			<div>
-				<img src={`${baseURL}/images/${filename}`} />
+		<div className='bg-light shadow-custom p-4 rounded-xl flex flex-col text-sm font-light gap-1 font-lexend lg:h-full xl:h-96'>
+			<div className='w-full'>
+				<img
+					src={`${baseURL}/images/${filename}`}
+					className='sm:w-full sm:h-32 sm:object-cover'
+				/>
 			</div>
 			<div className='flex justify-between items-center flex-row mt-1'>
-				<div className='font-medium'>{title}</div>
-				<div className='text-xs'>{quantity} items</div>
+				<div className='font-medium sm:text-lg'>{title}</div>
+				<div className='text-xs sm:text-sm'>{quantity} items</div>
 			</div>
-			<div className='text-xs'>{description}</div>
+			<div className='text-xs sm:text-sm lg:flex-grow'>{description}</div>
 			<div className='flex justify-between items-center flex-row text-xs gap-1 w-full'>
-				<div className='flex flex-row items-center w-full px-0'>
+				<div className='flex flex-row items-center w-full px-0 sm:text-sm '>
 					<svg
-						className='w-5 h-5 text-gray-800 dark:text-dark'
+						className='w-5 h-5 text-gray-800 dark:text-dark '
 						aria-hidden='true'
 						xmlns='http://www.w3.org/2000/svg'
 						width='24'
@@ -58,7 +59,7 @@ const CusCard = ({
 					</svg>
 					{type}
 				</div>
-				<div className='flex items-center gap-1  px-0 mr-2'>
+				<div className='flex items-center gap-1  px-0 mr-2 sm:w-full justify-center sm:text-sm'>
 					<svg
 						className='w-3 h-3 text-gray-800 dark:text-dark'
 						aria-hidden='true'
@@ -74,10 +75,10 @@ const CusCard = ({
 					{difficulty == 'Medium' ? 'Med' : difficulty}
 				</div>
 
-				<div className='flex items-center gap-1 px-0'>
+				<div className='flex items-center gap-1 px-0 sm:w-full justify-end text-right  sm:text-sm'>
 					<button
 						onClick={handleCopyClick}
-						className='bg-transparent px-0 focus:outline-none'
+						className='bg-transparent px-0 focus:outline-none flex w-full justify-end items-end text-right'
 					>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
@@ -85,7 +86,7 @@ const CusCard = ({
 							viewBox='0 0 24 24'
 							strokeWidth={1.5}
 							stroke='currentColor'
-							className='size-4'
+							className='size-4 text-right'
 						>
 							<path
 								strokeLinecap='round'
@@ -97,7 +98,7 @@ const CusCard = ({
 					<input
 						value={code}
 						onChange={(e) => setTextToCopy(e.target.value)}
-						className='w-full bg-transparent'
+						className='w-12 bg-transparent text-right'
 					/>
 				</div>
 			</div>

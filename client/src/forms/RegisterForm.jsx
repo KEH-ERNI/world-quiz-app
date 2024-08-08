@@ -118,6 +118,7 @@ const RegisterForm = ({ setOpenSign, setOpenLog }) => {
 					name={'pass'}
 					rules={{ required: 'Password is required.' }}
 					error={errors.pass}
+					type='password'
 				/>
 				<CusRadioBtn
 					options={options}

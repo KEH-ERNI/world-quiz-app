@@ -11,10 +11,10 @@ const ItemForm = ({ quizID, setOpenModal, existData = null }) => {
 
 	const defaultValues = {
 		text: existData?.text || '',
-		...existData?.options?.reduce((acc, option, index) => {
-			acc[`option${index + 1}`] = option.text;
-			return acc;
-		}, {}),
+		option1: existData?.options?.[0]?.text || '',
+		option2: existData?.options?.[1]?.text || '',
+		option3: existData?.options?.[2]?.text || '',
+		option4: existData?.options?.[3]?.text || '',
 	};
 
 	const {
@@ -22,6 +22,7 @@ const ItemForm = ({ quizID, setOpenModal, existData = null }) => {
 		handleSubmit,
 		setValue,
 		register,
+		reset,
 		formState: { errors },
 	} = useForm({ defaultValues });
 
@@ -52,6 +53,8 @@ const ItemForm = ({ quizID, setOpenModal, existData = null }) => {
 		if (correctOption === null) {
 			setCorrectError('Select at least one correct answer.');
 		} else {
+			setCorrectError(null);
+
 			if (existData) {
 				dispatch(
 					editQuestion({
@@ -65,9 +68,10 @@ const ItemForm = ({ quizID, setOpenModal, existData = null }) => {
 				});
 			} else {
 				dispatch(addQuestion(dataFormat)).then((response) => {
-					console.log(response);
 					dispatch(getQuiz(quizID));
 					setOpenModal(false);
+					reset(defaultValues);
+					setCorrectOption(null); // Reset the correct option
 				});
 			}
 		}
@@ -100,7 +104,11 @@ const ItemForm = ({ quizID, setOpenModal, existData = null }) => {
 				{Array.from({ length: 4 }).map((_, optIndex) => (
 					<div
 						key={optIndex}
-						className='mb-2 flex flex-row w-full justify-center items-center align-center px-3 text-sm font-light bg-inputbg rounded-md ring-1 ring-inset ring-primary-50 p-2 text-gray-900 focus:outline-none placeholder:text-primary-35 shadow-lg'
+						className={`mb-2 flex flex-row w-full justify-center items-center align-center px-3 text-sm font-light bg-inputbg rounded-md ring-1 ring-inset ${
+							correctOption === optIndex
+								? 'ring-primary'
+								: 'ring-primary-35'
+						} p-2 text-gray-900 focus:outline-none placeholder:text-primary-35 shadow-lg`}
 					>
 						<input
 							type='radio'
@@ -108,7 +116,7 @@ const ItemForm = ({ quizID, setOpenModal, existData = null }) => {
 							value={optIndex}
 							checked={correctOption === optIndex}
 							onChange={() => setCorrectOption(optIndex)}
-							className='mr-2'
+							className='mr-2 accent-primary'
 						/>
 						<div className='flex-grow'>
 							<CusTextArea

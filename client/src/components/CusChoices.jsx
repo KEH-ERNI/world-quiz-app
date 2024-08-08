@@ -6,40 +6,30 @@ const CusRadioBtn = ({ options, control, name }) => {
 			name={name}
 			control={control}
 			render={({ field }) => (
-				<div className='flex space-x-4'>
-					{options.map((option) => {
-						console.log(field.value === option.isCorrect);
+				<div>
+					{options.map((option, index) => {
 						return (
 							<div
-								key={option.id}
-								className='flex flex-row items-center justify-between'
+								key={index}
+								className={`mb-2 flex flex-row w-full align-center px-3 text-sm font-light rounded-md ring-1 ring-inset gap-2 ${
+									field.value === option.text
+										? 'ring-primary'
+										: 'ring-primary-35'
+								} p-2 text-gray-900 focus:outline-none placeholder:text-primary-35 shadow-lg`}
 							>
 								<input
 									type='radio'
 									id={option.text}
 									name={field.name}
-									// className='hidden'
+									className='mr-2 accent-primary'
 									checked={field.value === option.text}
 									onChange={() => field.onChange(option.text)}
 								/>
 								<label
-									htmlFor={option.id}
-									className={`flex flex-col items-center cursor-pointer ${
-										field.value === option.text
-											? 'border-primary-50'
-											: 'border-gray-300'
-									} border-2 p-2 rounded-md`}
+									htmlFor={index}
+									className={`flex flex-col items-center cursor-pointer`}
 								>
-									{/* <img
-									src={option.imageUrl}
-									alt={option.altText}
-									className={` w-1/2 h-full ${
-										field.value === option.value
-											? 'opacity-100'
-											: 'opacity-50'
-									}`}
-								/> */}
-									<div className='text-xs font-lexend'>
+									<div className='t font-lexend'>
 										{option.text}
 									</div>
 								</label>

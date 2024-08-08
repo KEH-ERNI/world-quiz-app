@@ -5,7 +5,9 @@ const CusModal = ({ title, content, openModal, setOpenModal }) => {
 
 	return (
 		<div
-			className={`relative z-10 ${openModal ? 'block' : 'hidden'}`}
+			className={`flex items-center justify-center relative  z-10 ${
+				openModal ? 'block' : 'hidden'
+			}`}
 			aria-labelledby={title}
 			role='dialog'
 			aria-modal={'true'}
@@ -15,9 +17,9 @@ const CusModal = ({ title, content, openModal, setOpenModal }) => {
 				aria-hidden='true'
 			></div>
 
-			<div className='fixed inset-0 z-10 min-w-screen overflow-y-auto'>
-				<div className='flex min-h-full items-center justify-center p-4 text-center'>
-					<div className='relative min-w-full transform overflow-hidden rounded-lg bg-light shadow-xl transition-all'>
+			<div className='fixed flex justify-items items-center inset-0 z-10 min-w-screen overflow-y-auto '>
+				<div className='flex min-h-full items-center justify-center p-4 text-center w-full'>
+					<div className='relative w-full sm:w-1/2 lg:w-2/6 transform overflow-hidden rounded-lg bg-light shadow-xl transition-all '>
 						<div className='p-5 flex flex-col'>
 							<div className='flex min-w-full justify-end '>
 								<button

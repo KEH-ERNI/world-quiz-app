@@ -82,6 +82,7 @@ const LoginForm = ({ setOpenSign, setOpenLog }) => {
 						control={control}
 						rules={{ required: 'Password is required.' }}
 						error={errors.pass}
+						type='password'
 					/>
 					<p className='text-red-700 font-light text-xs ml-1 text-center'>
 						{loginError}

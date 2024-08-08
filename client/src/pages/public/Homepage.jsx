@@ -12,11 +12,11 @@ const Homepage = () => {
 
 	return (
 		<main
-			className={`container-fluid min-w-screen min-h-screen p-8 bg-bg-light text-txt-light`}
+			className={`container-fluid w-screen min-h-screen p-8 bg-bg-light text-txt-light flex flex-col`}
 		>
 			<nav className='flex items-center justify-between flex-wrap'>
 				<div className='flex items-center flex-shrink-0'>
-					<img src='/logo.png' className='w-24' />
+					<img src='/logo.png' className='w-24 sm:w-32 ' />
 				</div>
 				<div className='block sm:hidden'>
 					<CusBtn
@@ -36,14 +36,14 @@ const Homepage = () => {
 					/>
 				</div>
 				<div
-					className={`font-outfit  mt-4 flex flex-col w-full bg-bg-light  flex-grow text-sm sm:flex sm:items-center sm:w-auto  sm:flex-row`}
+					className={`font-outfit  mt-4 flex flex-col w-full  flex-grow text-sm sm:flex sm:items-center sm:flex-grow-0 sm:w-auto  sm:flex-row sm:mt-0  md:flex-grow md:justify-center`}
 				>
 					<div
 						className={`${
 							openNav ? 'block' : 'hidden'
-						} flex flex-col gap-4 `}
+						} flex flex-col gap-4 sm:flex sm:block sm:flex-row sm:items-center md:justify-between md:w-full`}
 					>
-						<div className='flex flex-col gap-4 sm:flex-grow sm:flex-row '>
+						<div className='flex flex-col gap-4 sm:flex-grow sm:flex-row sm:text-base md:text-lg md:w-1/2 md:justify-center md:gap-8 lg:gap-12'>
 							<a
 								className={`block text-txt-light sm:inline-block font-regular`}
 							>
@@ -60,7 +60,7 @@ const Homepage = () => {
 								Categories
 							</a>
 						</div>
-						<div className='flex flex-col gap-2 sm:flex-row'>
+						<div className='flex flex-col gap-2 sm:flex-row md:text-base'>
 							<CusBtn
 								content={'LOG IN'}
 								theme={theme}
@@ -83,10 +83,10 @@ const Homepage = () => {
 			<hr
 				className={`${openNav ? 'mt-5 border-shadow' : 'border-none'}`}
 			/>
-			<section className='mt-4 font-lexend'>
-				<img src='/world.gif' />
-				<div className='flex flex-col gap-3'>
-					<div className='text-3xl font-medium'>
+			<section className='mt-4 font-lexend flex flex-col items-center justify-center flex-grow lg:flex-row lg:px-8 lg:gap-12'>
+				<img src='/world.gif' className='w-64 sm:w-96 lg:order-2' />
+				<div className='flex flex-col gap-3 lg:gap-5'>
+					<div className='text-3xl font-medium sm:text-4xl lg:text-5xl'>
 						<div>
 							Know the <span className='text-primary'>World</span>
 							,
@@ -95,14 +95,14 @@ const Homepage = () => {
 							Quiz by <span className='text-primary'>Quiz</span>
 						</div>
 					</div>
-					<div className='font-light text-sm'>
+					<div className='font-light text-sm sm:text-lg'>
 						Discover the wonders of the world through engaging
 						quizzes, expanding your knowledge and challenging your
 						understanding of countries across the globe.
 					</div>
 					<CusBtn
 						content={
-							<div className='flex flex-row justify-center items-center'>
+							<div className='flex flex-row justify-center items-center sm:text-lg'>
 								PLAY NOW
 								<svg
 									xmlns='http://www.w3.org/2000/svg'
@@ -119,6 +119,8 @@ const Homepage = () => {
 							</div>
 						}
 						style={'primary'}
+						action={() => setOpenLog(true)}
+						lgW={'1/2'}
 					/>
 				</div>
 				<CusModal
