@@ -61,9 +61,9 @@ const QuizItem = () => {
 	}, [quizId, dispatch]);
 
 	return (
-		<div className='container-fluid w-screen min-h-screen p-8 bg-bg-light text-txt-light font-lexend flex flex-col gap-4'>
+		<div className='container-fluid w-screen min-h-screen p-8 bg-bg-light text-txt-light font-lexend flex flex-col gap-4 justify-center'>
 			<button
-				className='bg-transparent px-0 pt-0 focus:outline-none'
+				className='bg-transparent px-0 pt-0 focus:outline-none hover:outline-none border-none -mt-5'
 				onClick={() => navigate('/quizzes')}
 			>
 				<svg
@@ -87,17 +87,17 @@ const QuizItem = () => {
 				<div className='rounded-lg bg-white shadow-custom flex items-center justify-center p-2 '>
 					<img
 						src={`https://localhost:7045/images/${current?.imageName}`}
-						className='w-full h-auto md:h-40 object-contain md:object-cover'
+						className='w-full h-40 object-cover '
 					/>
 				</div>
 				<div className='flex flex-col gap-1 text-sm font-light md:text-base'>
 					<div className='flex flex-col justify-between items-left'>
-						<div className='text-xl md:text-2xl font-semibold bg-shadow p-1'>
+						<div className='text-xl md:text-2xl font-semibold bg-shadow p-1 text-center'>
 							{current?.name} ({current?.quantity} items)
 						</div>
 					</div>
 
-					<div className='flex flex-col md:flex-row justify-between items-left md:mt-4'>
+					<div className='flex flex-col md:flex-row justify-between items-left md:mt-4 gap-5'>
 						<div className='flex flex-row gap-1  md:justify-center'>
 							<div>
 								<img
@@ -140,13 +140,14 @@ const QuizItem = () => {
 					</div>
 				</div>
 			</div>
-			<div
-				className={`text-sm font-light bg-shadow rounded-sm p-2 md:text-base items-center justify-center  ${
-					user?.type === 'Student' ? 'lg:w-1/2 ' : 'lg:w-full'
-				}`}
-			>
-				{current?.description}
-			</div>
+			{user?.type === 'Instructor' && (
+				<div
+					className={`text-sm font-light bg-shadow rounded-sm p-2 md:text-base items-center justify-center  `}
+				>
+					{current?.description}
+				</div>
+			)}
+
 			{user?.type === 'Instructor' && (
 				<InstructorItem current={current} />
 			)}

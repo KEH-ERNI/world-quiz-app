@@ -78,7 +78,7 @@ const CusCard = ({
 				<div className='flex items-center gap-1 px-0 sm:w-full justify-end text-right  sm:text-sm'>
 					<button
 						onClick={handleCopyClick}
-						className='bg-transparent px-0 focus:outline-none flex w-full justify-end items-end text-right'
+						className='bg-transparent px-0 focus:outline-none flex w-full justify-end items-end text-right border-none'
 					>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'

@@ -16,9 +16,14 @@ const Result = () => {
 	useEffect(() => {
 		if (takeId) {
 			dispatch(getTakeQuiz(takeId));
-			dispatch(getQuiz(current?.quizID));
 		}
 	}, [takeId, dispatch]);
+
+	useEffect(() => {
+		if (current?.quizID) {
+			dispatch(getQuiz(current.quizID));
+		}
+	}, [current, dispatch]);
 
 	const isPassed = current?.score > data[0]?.quantity / 2;
 

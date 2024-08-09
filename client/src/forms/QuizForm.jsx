@@ -21,10 +21,6 @@ const QuizForm = ({
 		return Math.floor(100000 + Math.random() * 900000);
 	};
 
-	// localStorage.removeItem('state');
-	// localStorage.removeItem('ACCESS_TOKEN');
-	// localStorage.removeItem('ACCESS_USER');
-
 	const { control, handleSubmit, setValue } = useForm({
 		defaultValues: {
 			userID: user.userID,
@@ -71,7 +67,6 @@ const QuizForm = ({
 		if (existData) {
 			dispatch(editQuiz({ id: existData.quizID, formData })).then(
 				(response) => {
-					console.log(response);
 					dispatch(getQuizzes());
 					setOpenModal(false);
 
@@ -108,7 +103,7 @@ const QuizForm = ({
 		'Technology and Innovation',
 		'Current Affairs',
 	];
-	const type = ['Multiple Choice', 'Identification', 'True or False'];
+	const type = ['Multiple Choice'];
 	const difficulty = ['Easy', 'Medium', 'Hard'];
 
 	return (
@@ -166,7 +161,12 @@ const QuizForm = ({
 					onFileChange={onFileChange}
 				/>
 				<div className='flex flex-row gap-2 w-full justify-between'>
-					<CusBtn content={'CANCEL'} style={'secondary'} w={'full'} />
+					<CusBtn
+						content={'CANCEL'}
+						style={'secondary'}
+						w={'full'}
+						action={() => setOpenModal(false)}
+					/>
 					<CusBtn
 						content={`${existData ? 'EDIT' : 'ADD'}`}
 						style={'primary'}

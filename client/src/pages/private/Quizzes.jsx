@@ -57,9 +57,9 @@ const Quizzes = () => {
 
 	return (
 		<main
-			className={`container-fluid w-screen overflow-hidden h-screen bg-main text-txt-light md:flex md:flex-row md:gap-8`}
+			className={`container-fluid w-screen overflow-hidden h-auto bg-main text-txt-light md:flex md:flex-row md:gap-8`}
 		>
-			<div className='flex h-full '>
+			<div className='flex h-screen  w-screen'>
 				<div className='relative md:hidden '>
 					<div
 						onClick={() => setIsSidebarOpen(true)}
@@ -134,7 +134,10 @@ const Quizzes = () => {
 						</div>
 					</div>
 					<div className='flex flex-col gap-3 px-24 text-sm sm:text-lg md:text-sm md:px-4'>
-						<div className='flex flex-row justify-left gap-2 items-center disabled pointer-cursor font-light sm:justify-center md:flex-none'>
+						<button
+							disabled={true}
+							className='bg-transparent flex flex-row justify-left gap-2 items-center disabled pointer-cursor font-light sm:justify-center md:flex-none border-none text-gray-500'
+						>
 							<svg
 								xmlns='http://www.w3.org/2000/svg'
 								fill='none'
@@ -150,8 +153,8 @@ const Quizzes = () => {
 								/>
 							</svg>
 							Dashboard
-						</div>
-						<div className='flex flex-row justify-left gap-2 items-center disabled pointer-cursor font-medium text-primary sm:justify-center'>
+						</button>
+						<button className='bg-transparent flex flex-row justify-left gap-2 items-center disabled pointer-cursor font-medium text-primary sm:justify-center border-none hover:bg-shadow focus:outline-none'>
 							<svg
 								xmlns='http://www.w3.org/2000/svg'
 								viewBox='0 0 24 24'
@@ -166,8 +169,11 @@ const Quizzes = () => {
 								<path d='M12.971 1.816A5.23 5.23 0 0 1 14.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 0 1 3.434 1.279 9.768 9.768 0 0 0-6.963-6.963Z' />
 							</svg>
 							Quizzes
-						</div>
-						<div className='flex flex-row justify-left gap-2 items-center disabled pointer-cursor font-light sm:justify-center'>
+						</button>
+						<button
+							disabled={true}
+							className='bg-transparent flex flex-row justify-left gap-2 items-center disabled pointer-cursor font-light sm:justify-center border-none text-gray-500'
+						>
 							<svg
 								xmlns='http://www.w3.org/2000/svg'
 								fill='none'
@@ -183,13 +189,13 @@ const Quizzes = () => {
 								/>
 							</svg>
 							Performance
-						</div>
+						</button>
 					</div>
 
 					<div className='py-5 px-5 flex flex-col justify-center h-24 '>
 						<hr className='border-shadow' />
 						<button
-							className='h-full flex flex-row items-center justify-center gap-2 mt-5 font-light text-brown-light hover:text-dark text-sm sm:text-base bg-shadow focus:outline-none'
+							className='h-full flex flex-row items-center justify-center gap-2 mt-5 font-light text-brown-light hover:text-dark text-sm sm:text-base bg-shadow focus:outline-none border-none'
 							onClick={() => onLogout()}
 						>
 							<svg
@@ -212,7 +218,7 @@ const Quizzes = () => {
 				<div
 					className={`flex-1 ${
 						isSidebarOpen ? 'hidden' : ''
-					} md:block md:w-auto h-full overflow-y-auto  hide-scrollbar mt-16 md:pl-8 pb-20 px-8`}
+					} md:block md:w-auto h-auto overflow-y-auto flex  hide-scrollbar mt-16 md:pl-8 pb-10 px-8 `}
 				>
 					{user?.type === 'Instructor' && (
 						<InstructorQuiz

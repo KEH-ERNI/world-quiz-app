@@ -11,7 +11,7 @@ const CusRadioBtn = ({ options, control, name }) => {
 						return (
 							<div
 								key={index}
-								className={`mb-2 flex flex-row w-full align-center px-3 text-sm font-light rounded-md ring-1 ring-inset gap-2 ${
+								className={`mb-2 flex flex-row w-full align-center px-3 text-sm font-light rounded-md ring-1 ring-inset gap-2 md:mb-4 md:p-4 ${
 									field.value === option.text
 										? 'ring-primary'
 										: 'ring-primary-35'

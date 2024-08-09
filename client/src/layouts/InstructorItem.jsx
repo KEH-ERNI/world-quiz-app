@@ -1,4 +1,4 @@
-import { CusBtn, CusModal } from '../components';
+import { CusBtn, CusModal, CusAlert } from '../components';
 import { useState } from 'react';
 import { ItemForm } from '../forms';
 import { useDispatch } from 'react-redux';
@@ -7,12 +7,23 @@ import { delQuestion, getQuiz } from '../redux/slices';
 const InstructorItem = ({ current }) => {
 	const [openAdd, setOpenAdd] = useState(false);
 	const [openEdit, setOpenEdit] = useState(false);
+	const [openDel, setOpenDelete] = useState(false);
 	const [currentItem, setCurrentItem] = useState();
 	const dispatch = useDispatch();
 
-	const onDeleteItem = (id) => {
+	const [alertVisible, setAlertVisible] = useState(false);
+	const [alertMsg, setAlertMsg] = useState('');
+	const [alertDesc, setAlertDesc] = useState('');
+
+	const onDeleteItem = () => {
+		let id = currentItem;
 		dispatch(delQuestion(id)).then(() => {
 			dispatch(getQuiz(current?.quizID));
+			setOpenDelete(false);
+			setAlertMsg('Success!');
+			setAlertDesc('The item has been successfully deleted.');
+			setAlertVisible(true);
+			setTimeout(() => setAlertVisible(false), 3000);
 		});
 	};
 
@@ -98,7 +109,7 @@ const InstructorItem = ({ current }) => {
 												setOpenEdit(true);
 												setCurrentItem(question);
 											}}
-											className='bg-blue-light p-2 w-full'
+											className='bg-blue-light p-2 w-full hover:border-green-900'
 										>
 											<div className='flex w-full items-center text-center justify-center gap-1'>
 												<svg
@@ -121,11 +132,12 @@ const InstructorItem = ({ current }) => {
 
 										<button
 											onClick={() => {
-												onDeleteItem(
+												setOpenDelete(true);
+												setCurrentItem(
 													question.questionID
 												);
 											}}
-											className='bg-red-light flex w-full'
+											className='bg-red-light flex w-full hover:border-red-700'
 										>
 											<div className='flex w-full items-center text-center justify-center gap-1'>
 												<svg
@@ -157,6 +169,10 @@ const InstructorItem = ({ current }) => {
 						<ItemForm
 							setOpenModal={setOpenAdd}
 							quizID={current?.quizID}
+							setAlertVisible={setAlertVisible}
+							setAlertMsg={setAlertMsg}
+							setAlertDesc={setAlertDesc}
+							quizType={current?.type}
 						/>
 					}
 					openModal={openAdd}
@@ -168,11 +184,60 @@ const InstructorItem = ({ current }) => {
 							setOpenModal={setOpenEdit}
 							quizID={current?.quizID}
 							existData={currentItem}
+							setAlertVisible={setAlertVisible}
+							setAlertMsg={setAlertMsg}
+							setAlertDesc={setAlertDesc}
+							quizType={current?.type}
 						/>
 					}
 					openModal={openEdit}
 					setOpenModal={setOpenEdit}
 				/>
+				<CusModal
+					content={
+						<div className='flex flex-col items-center font-lexend gap-2'>
+							<svg
+								xmlns='http://www.w3.org/2000/svg'
+								viewBox='0 0 24 24'
+								fill='currentColor'
+								className='size-12 text-primary'
+							>
+								<path
+									fillRule='evenodd'
+									d='M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z'
+									clipRule='evenodd'
+								/>
+							</svg>
+							Are you sure you want to delete this item?
+							<div className='mt-2 flex flex-row gap-2 w-full justify-between'>
+								<CusBtn
+									content={'CANCEL'}
+									style={'secondary'}
+									w={'full'}
+									action={() => setOpenDelete(false)}
+								/>
+								<CusBtn
+									content={'DELETE'}
+									style={'primary'}
+									action={() => {
+										onDeleteItem();
+									}}
+									w={'full'}
+								/>
+							</div>
+						</div>
+					}
+					openModal={openDel}
+					setOpenModal={setOpenDelete}
+				/>
+				{alertVisible && (
+					<CusAlert
+						type='success'
+						message={alertMsg}
+						description={alertDesc}
+						setAlertVisible={setAlertVisible}
+					/>
+				)}
 			</div>
 		);
 	}

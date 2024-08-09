@@ -5,6 +5,7 @@ export default {
 		extend: {
 			colors: {
 				primary: '#C7522A',
+				'primary-1': 'rgba(199, 82, 42, 0.1)',
 				'primary-35': 'rgba(199, 82, 42, 0.35)',
 				'primary-20': 'rgba(199, 82, 42, 0.20)',
 				'primary-50': 'rgba(199, 82, 42, 0.50)',

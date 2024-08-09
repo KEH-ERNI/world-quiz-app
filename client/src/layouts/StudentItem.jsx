@@ -12,6 +12,7 @@ const StudentItem = ({ current, user }) => {
 	const [answers, setAnswers] = useState({});
 	const dispatch = useDispatch();
 
+
 	const { control, handleSubmit, watch, setValue } = useForm({
 		defaultValues: {
 			quizID: current?.quizID,
@@ -62,14 +63,15 @@ const StudentItem = ({ current, user }) => {
 		}, 0);
 
 		const dataFormat = {
-			quizID: data.quizID,
+			quizID: current?.quizID,
 			score: score,
 			userID: data.userID,
 		};
 
 		dispatch(addTakeQuiz(dataFormat)).then((response) => {
 			dispatch(getTakeQuizzes());
-			navigate(`/result/${response?.payload?.takeID}`);
+			let takeId = response?.payload?.takeID;
+			navigate(`/result/${takeId}`);
 		});
 	};
 
@@ -88,13 +90,13 @@ const StudentItem = ({ current, user }) => {
 						className='flex flex-col gap-2 md:w-1/2 '
 					>
 						<div className='bg-white p-4 shadow-custom rounded-lg text-sm font-light flex flex-col gap-2'>
-							<div className='text-sm font-medium'>
+							<div className='text-sm font-medium md:py-6 '>
 								<h2>
 									{curIndex + 1}.) {curQuestion.text}
 								</h2>
 							</div>
 							<hr className='border-shadow' />
-							<div className='flex flex-col'>
+							<div className='flex flex-col md:gap:4'>
 								<CusChoices
 									options={curQuestion.options}
 									control={control}

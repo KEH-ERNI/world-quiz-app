@@ -34,7 +34,7 @@ const RegisterForm = ({ setOpenSign, setOpenLog }) => {
 			altText: 'Student',
 		},
 		{
-			value: 'teacher',
+			value: 'Instructor',
 			imageUrl: 'teacher.png',
 			altText: 'Instructor',
 		},
@@ -127,6 +127,9 @@ const RegisterForm = ({ setOpenSign, setOpenLog }) => {
 					rules={{ required: 'User role is required.' }}
 					error={errors.type}
 				/>
+				<p className='text-red-700 font-light text-xs ml-1 text-center'>
+					{signError}
+				</p>
 				<CusBtn content={'SIGN IN'} style={'primary'} type='submit' />
 			</form>
 		</div>

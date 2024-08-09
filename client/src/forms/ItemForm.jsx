@@ -1,10 +1,17 @@
-import { CusInput, CusTextArea, CusBtn, CusSelect } from '../components';
+import { CusTextArea, CusBtn } from '../components';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { addQuestion, getQuiz, editQuestion } from '../redux/slices';
 
-const ItemForm = ({ quizID, setOpenModal, existData = null }) => {
+const ItemForm = ({
+	quizID,
+	setOpenModal,
+	existData = null,
+	setAlertDesc,
+	setAlertMsg,
+	setAlertVisible,
+}) => {
 	const [correctOption, setCorrectOption] = useState(null);
 	const [correctError, setCorrectError] = useState(null);
 	const dispatch = useDispatch();
@@ -62,16 +69,23 @@ const ItemForm = ({ quizID, setOpenModal, existData = null }) => {
 						updatedData: dataFormat,
 					})
 				).then((response) => {
-					console.log(response);
 					dispatch(getQuiz(quizID));
 					setOpenModal(false);
+					setAlertMsg('Success!');
+					setAlertDesc('This item has been successfully edited.');
+					setAlertVisible(true);
+					setTimeout(() => setAlertVisible(false), 3000);
 				});
 			} else {
 				dispatch(addQuestion(dataFormat)).then((response) => {
 					dispatch(getQuiz(quizID));
 					setOpenModal(false);
 					reset(defaultValues);
-					setCorrectOption(null); // Reset the correct option
+					setCorrectOption(null);
+					setAlertMsg('Success!');
+					setAlertDesc('The item has been successfully added.');
+					setAlertVisible(true);
+					setTimeout(() => setAlertVisible(false), 3000);
 				});
 			}
 		}
@@ -80,7 +94,7 @@ const ItemForm = ({ quizID, setOpenModal, existData = null }) => {
 	return (
 		<div className='text-left pt-0 px-2 pb-2 font-lexend'>
 			<div className='flex flex-col gap-1'>
-				<div className='text-xl font-medium'>Item 1</div>
+				<div className='text-xl font-medium'>Item</div>
 				<div className='border-t border-primary-35 mt-2' />
 				<div className='flex flex-col'></div>
 			</div>

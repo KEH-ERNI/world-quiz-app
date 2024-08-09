@@ -74,7 +74,6 @@ const StudentQuiz = ({ categories, dispatch, data }) => {
 							  )
 							: [];
 
-						console.log(filteredQuiz);
 						const setFiltered = filteredQuiz.filter((quiz) => {
 							const matchesSearch = search
 								? quiz.name
